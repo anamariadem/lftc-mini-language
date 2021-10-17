@@ -1,0 +1,21 @@
+Syntax:
+
+Sintactical rules:
+	program = "start" compound_statement "finish"
+	compound_statement = (declaration_statement | array_declaration_statement | statement) ";" [compound_statement]
+	declaration_statement = "def" identifier ":" primitive_type ["=" expression]
+	primitive_type = "int" | "char" | "string"
+	constant_value = int_no | character | string
+	array_declaration_statement = "def" identifier ":" primitive_type "[" int_no "]"
+	statement = assignment_statement | io_statement | if_statement | while_statement | "exit"
+	io_statement = read_statement | write_statement
+	assignment_statement = identifier "=" expression
+	read_statement = "read" "(" identifier ")"
+	write_statement = "log" "(" expression ")"
+	expression = term [("+" | "-") expression]
+	term = factor [("*" | "/") term]
+	factor = int_no | identifier | "(" expression ")"
+	if_statement = "if" "(" condition ")" "then" "{" compound_statement "}" ["else" "{" compound_statement "}"]
+	while_statement = "while" "(" condition ")" "execute" "{" compound_statement "}"
+	condition = expression relational_operator expression
+	relational_operator = "<" | ">" | "<=" | ">=" | "==" | "!="
