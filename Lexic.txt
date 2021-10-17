@@ -9,7 +9,7 @@ Lexic:
 a. Special symbols, representing:
 
 - operators: + - * / = < > <= >= == !=
-- separators: [ ] { } ; : space
+- separators: [ ] { } ; : space ( )
 - reserved words: start finish def int char string log read if then else while execute exit
 
 b. Identifiers =  a sequence of letters and digits s.t. the first character is a letter
@@ -25,9 +25,9 @@ int_no = [("+" | "-")] non_zero_digit {digits} | "0"
 non_zero_digit = "1" | ... | "9"
 
 - character:
-character = 'letter'|'digit'|'symbol'
+character_const = 'letter'|'digit'|'symbol'
 symbol = ":" | ";" | "?" | "!" | "."
 
 - string
-string = "character_for_string{character_for_string}"
-character_for_string = letter | digit | symbol
+string = "character{character}"
+character = letter | digit | symbol

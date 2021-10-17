@@ -10,8 +10,8 @@ Sintactical rules:
 	statement = assignment_statement | io_statement | if_statement | while_statement | "exit"
 	io_statement = read_statement | write_statement
 	assignment_statement = identifier "=" expression
-	read_statement = read "(" identifier ")"
-	write_statement = log "(" identifier | constant_value ")"
+	read_statement = "read" "(" identifier ")"
+	write_statement = "log" "(" expression ")"
 	expression = term [("+" | "-") expression]
 	term = factor [("*" | "/") term]
 	factor = int_no | identifier | "(" expression ")"
