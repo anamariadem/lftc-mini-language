@@ -1,0 +1,21 @@
+declaration = type identifier "=" expression "\n"
+type = ("bool" | "int" | "string")["[]"]
+const = intConst | boolConst | stringConst
+
+expression = "(" expression operator expression ")" | expression operator expression | expression operator term | "(" expression operator term ")" | term | "input()"
+term = const | identifier
+operator = "+" | "-" | "*" | "/" | "==" | "!=" | "<" | "<=" | ">" | ">=" | "!" | "&" | "|"
+
+assignment = ((identifier inplaceOperator expression) | (identifier selfOperator) | (selfOperator identifier))  "\n"
+inplaceOperator = "=" | "+=" | "-=" | "*=" | "/=" | "&=" | "|="
+selfOperator = "++" | "--";
+
+compund = {compund} simple "\n"
+simple = declaration | assignment | "print(" expression ")" | block
+
+block = when | while | for
+
+when = "when(" expression ")" "{" compund "}" [otherwise]
+otherwise = "otherwise"["(" expression ")"] "{" compund "}"
+while = "while(" expression ")" "{" compund "}"
+for = "(" identifier " in " identifier ")" "{" compund "}"
