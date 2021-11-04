@@ -1,0 +1,17 @@
+start
+	def array: int[10];
+	def n: int;
+
+	read(n);
+
+	def sum: int = 0;
+	def i: int = 0;
+
+	while(i < n) execute{
+		read(array[i]);
+		sum = sum + array[i];
+		i = i + 1;
+	}
+
+	log(sum);
+finish
