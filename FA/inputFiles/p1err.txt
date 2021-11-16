@@ -1,0 +1,22 @@
+start
+	def a: int;
+	def b: int;
+	def c: int;
+
+	read(a);
+	read(b);
+	read(c);
+
+	def max: int = 22a;
+
+	if (max < b) then{
+		max = b;
+	}
+
+	if (max < c) then{
+		max = c;
+	}
+
+	log("min");
+	log(min);
+finish

@@ -1,0 +1,20 @@
+start
+	def n: int;
+	def i: int = 3;
+
+	read(n);
+
+	if (n == 2) then{
+		log("prime");
+	}
+
+	while(i * i < n) execute {
+		if (n % i == 0) then{
+			log("nonPrime");
+			exit;
+		}
+		i = i + 2;
+	}
+
+	log("nonPrime");
+finish
