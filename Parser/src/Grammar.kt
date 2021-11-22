@@ -46,5 +46,5 @@ class Grammar {
     override fun toString() = "Terminals: $terminals\n" +
             "Non-terminals: $nonTerminals\n" +
             "Starting symbol: $startingSymbol\n" +
-            "Productions: $productions\n"
+            "Productions: $productions"
 }
