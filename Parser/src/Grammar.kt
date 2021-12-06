@@ -1,7 +1,8 @@
 class Grammar {
-    private val terminals = arrayListOf<String>()
+    val terminals = arrayListOf<String>()
     val nonTerminals = arrayListOf<String>()
-    private var startingSymbol = ""
+    var startingSymbol = ""
+        private set
     val productions = hashMapOf<String, ArrayList<List<String>>>()
 
     fun readFromFile(fileName: String) = readFileIndexed(fileName) { index, line ->

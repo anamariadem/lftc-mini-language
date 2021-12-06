@@ -1,1 +1,1 @@
-const val EPSILON = "E"
+const val EPSILON = "ε"

@@ -12,4 +12,5 @@ fun main() {
 //    println(grammar.isContextFree())
     val parser = Parser(grammar)
     println(parser.firstMap)
+    println(parser.followMap)
 }

@@ -7,20 +7,42 @@ class Parser(private val grammar: Grammar) {
         initializeFollowMap()
     }
 
-    private fun initializeFirstMap() {
-        var changed: Boolean
-        do {
-            changed = false
-            grammar.productions.forEach { (key, values) ->
-                values.forEach {
-                    changed = addTokensInSet(firstMap[key], it, hashSetOf(EPSILON)) || changed
-                }
+    private tailrec fun initializeFirstMap() {
+        var changed = false
+        grammar.productions.forEach { (key, values) ->
+            values.forEach {
+                changed = addTokensInSet(firstMap[key], it, hashSetOf(EPSILON)) || changed
             }
-        } while (changed)
+        }
+
+        if (changed)
+            initializeFirstMap()
     }
 
-    private fun initializeFollowMap() {
+    private tailrec fun initializeFollowMap(firstCall: Boolean = true) {
+        if (firstCall)
+            followMap[grammar.startingSymbol]?.add(EPSILON)
 
+        var changed = false
+        grammar.productions.forEach { (key, values) ->
+            values.forEach { tokens ->
+                tokens.filter { it in grammar.nonTerminals }
+                    .forEachIndexed { index, token ->
+                        followMap[token]?.let {
+                            val tokensForKey = followMap[key] ?: hashSetOf()
+                            val listWasModified = if (index > tokens.size)
+                                it.addAll(tokensForKey)
+                            else
+                                addTokensInSet(it, tokens.subList(index + 1, tokens.size), tokensForKey)
+
+                            changed = listWasModified || changed
+                        }
+                    }
+            }
+        }
+
+        if (changed)
+            initializeFollowMap(false)
     }
 
     private fun addTokensInSet(
