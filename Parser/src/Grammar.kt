@@ -1,8 +1,8 @@
 class Grammar {
     private val terminals = arrayListOf<String>()
-    private val nonTerminals = arrayListOf<String>()
+    val nonTerminals = arrayListOf<String>()
     private var startingSymbol = ""
-    private val productions = hashMapOf<String, ArrayList<String>>()
+    val productions = hashMapOf<String, ArrayList<List<String>>>()
 
     fun readFromFile(fileName: String) = readFileIndexed(fileName) { index, line ->
         when (index) {
@@ -21,11 +21,9 @@ class Grammar {
     fun validateProductions() = productions.forEach { (key, values) ->
         if (key !in nonTerminals)
             error("Invalid production '$key' not found in non-terminals list!")
-        values.flatMap { value -> value.map { it.toString() } }
-            .forEach {
-                if (it !in terminals && it !in nonTerminals)
-                    error("Invalid production '$it' not found in terminals or non-terminals list!")
-            }
+        values.flatten().firstOrNull { it !in terminals && it !in nonTerminals }?.let {
+            error("Invalid production '$it' not found in terminals or non-terminals list!")
+        }
     }
 
     fun getProductions(nonTerminal: String) =
@@ -36,11 +34,12 @@ class Grammar {
     private fun readProduction(line: String) {
         val (key, values) = line.split(" -> ")
         val valuesList = values.split(" | ")
+        val tokens = valuesList.map { it.split(" ") }
 
         if (productions[key] == null)
             productions[key] = ArrayList()
 
-        productions[key]?.addAll(valuesList)
+        productions[key]?.addAll(tokens)
     }
 
     override fun toString() = "Terminals: $terminals\n" +
