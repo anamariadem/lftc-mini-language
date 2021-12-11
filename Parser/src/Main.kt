@@ -15,5 +15,5 @@ fun main() {
     val parser = Parser(grammar)
     println(parser.first)
     println(parser.follow)
-//    println(parser.followMap)
+    println(parser.table)
 }
