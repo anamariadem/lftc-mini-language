@@ -16,4 +16,5 @@ fun main() {
     println(parser.first)
     println(parser.follow)
     println(parser.table)
+    println(parser.evaluate("a a b"))
 }

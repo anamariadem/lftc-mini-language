@@ -13,7 +13,7 @@ class FollowFunction(private val grammar: Grammar, private val firstFunction: Fi
 
     private fun initialize() {
         getOrCreate(grammar.startingSymbol)
-        grammar.productions.keys.forEach {
+        grammar.nonTerminals.forEach {
             getOrCreate(it)
         }
     }
@@ -55,7 +55,7 @@ class FollowFunction(private val grammar: Grammar, private val firstFunction: Fi
         return followTokens
     }
 
-    private fun get(key: String) = map[key] ?: error("Key $key not present in non-terminals")
+    operator fun get(key: String) = map[key] ?: error("Key $key not present in non-terminals")
 
     private fun add(key: String, tokens: HashSet<String>): HashSet<String> {
         map[key]?.addAll(tokens)

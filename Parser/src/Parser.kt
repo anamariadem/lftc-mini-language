@@ -1,71 +1,86 @@
 import dto.FirstFunction
 import dto.FollowFunction
 import dto.Grammar
-    val table = Table()
-        initializeTable()
+import dto.table.Operation
+import dto.table.Table
 
-class Parser(grammar: Grammar) {
+class Parser(private val grammar: Grammar) {
     val first = FirstFunction(grammar)
     val follow = FollowFunction(grammar, first)
-    private fun initializeTable() {
-        val terminalsWithEpsilon = grammar.terminals + arrayListOf(EPSILON)
+    val table = Table(grammar, first, follow)
 
-        grammar.productions.forEach { (rowSymbol, tokenList) ->
-            tokenList.forEach { tokens ->
-                terminalsWithEpsilon.forEach {
-                    applyFirstRule(tokens, rowSymbol, it)
-                }
-            }
+    fun evaluate(sequence: String): List<Int> {
+        val inputStack = ArrayDeque("$sequence $END_TERMINAL".split(" "))
+        val workingStack = ArrayDeque(listOf(grammar.startingSymbol, END_TERMINAL))
+        val outputStack = ArrayDeque<Int>()
+
+        while (inputStack.size > 0 || workingStack.size > 0) {
+            logStack(inputStack, workingStack, outputStack)
+
+            val inputStackFirst = inputStack.first()
+            val workingStackFirst = workingStack.first()
+
+            if (tryExecuteAccept(inputStackFirst, workingStackFirst))
+                break
+
+            if(tryExecutePop(inputStack, workingStack))
+                continue
+
+            expandWorkingStack(inputStackFirst, workingStack, outputStack)
         }
 
-        applySecondRule()
-        applyThirdRule()
+        return outputStack.toList()
     }
 
-    private fun applyFirstRule(tokens: List<String>, rowSymbol: String, columnSymbol: String) {
-        val firstToken = tokens.first()
+    private fun tryExecuteAccept(inputStackFirst: String, workingStackFirst: String): Boolean {
+        if (inputStackFirst != END_TERMINAL || workingStackFirst != END_TERMINAL)
+            return false
 
-        /** Part one */
-        if (firstToken == columnSymbol && columnSymbol != EPSILON) {
-            table[rowSymbol, columnSymbol] = tokens
-            return
-        }
+        val (tokens) = table[workingStackFirst, inputStackFirst]
+        val operation = Operation.from(tokens.first())
 
-        if (firstToken in grammar.nonTerminals && columnSymbol in (firstMap[firstToken] ?: return)) {
-            if (table.hasKey(rowSymbol, columnSymbol))
-                error("($rowSymbol, $columnSymbol) found in table, grammar is not LL(1)!")
-
-            table[rowSymbol, columnSymbol] = tokens
-            return
-        }
-
-        if (firstToken == EPSILON) {
-            followMap[rowSymbol]?.forEach {
-                table[rowSymbol, if (it == EPSILON) END_TERMINAL else it] = tokens
-            }
-            return
-        }
-
-        /** Part two */
-        val firsts = grammar.productions[rowSymbol]
-            ?.flatten()
-            ?.filter { it in grammar.nonTerminals }
-            ?.flatMapNotNull { firstMap[it] }
-            ?.toSet()
-            ?: return
-
-        if (EPSILON !in firsts)
-            return
-
-        followMap[rowSymbol]?.map { if (it == EPSILON) END_TERMINAL else it }
-            ?.filter { !table.hasKey(rowSymbol, it) }
-            ?.forEach { table[rowSymbol, it] = tokens }
+        return operation == Operation.ACCEPT
     }
 
-    private fun applySecondRule() = grammar.terminals.forEach {
-        table[it, it] = listOf("pop")
+    private fun tryExecutePop(inputStack: ArrayDeque<String>, workingStack: ArrayDeque<String>): Boolean {
+        val inputStackFirst = inputStack.first()
+        val workingStackFirst = workingStack.first()
+
+        if (inputStackFirst != workingStackFirst)
+            return false
+
+        val (tokens) = table[workingStackFirst, inputStackFirst]
+        val operation = Operation.from(tokens.first())
+
+        if (operation != Operation.POP)
+            return false
+
+        inputStack.removeFirst()
+        workingStack.removeFirst()
+        return true
     }
 
-    private fun applyThirdRule() {
-        table[END_TERMINAL, END_TERMINAL] = listOf("acc")
+    private fun expandWorkingStack(
+        inputStackFirst: String,
+        workingStack: ArrayDeque<String>,
+        outputStack: ArrayDeque<Int>
+    ) {
+        val workingStackFirst = workingStack.first()
+        val (tokens, index) = table[workingStackFirst, inputStackFirst]
+
+        workingStack.removeFirst()
+        workingStack.addAll(0, tokens.filter { it != EPSILON })
+        outputStack.addLast(index)
+    }
+
+    private fun logStack(
+        inputStack: ArrayDeque<String>,
+        workingStack: ArrayDeque<String>,
+        outputStack: ArrayDeque<Int>
+    ) {
+        println()
+        println("Input: $inputStack")
+        println("Working: $workingStack")
+        println("Output: $outputStack")
+    }
 }

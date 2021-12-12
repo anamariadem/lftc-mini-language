@@ -9,6 +9,22 @@ class FirstFunction(private val grammar: Grammar) {
         initialize()
     }
 
+    fun getConcatenationOfOne(tokenSequence: List<String>): HashSet<String> {
+        if (tokenSequence.isEmpty())
+            return hashSetOf()
+
+        val firstToken = tokenSequence.first()
+        if (tokenSequence.size < 2)
+            return get(firstToken)
+
+        val tokenValues = get(firstToken)
+        if (EPSILON !in tokenValues)
+            return tokenValues
+
+        tokenValues.remove(EPSILON)
+        return tokenValues.apply { addAll(computeConcatenationOfOne(tokenSequence.drop(1))) }
+    }
+
     private fun initialize() = grammar.productions.keys.forEach {
         getOrCreate(it)
     }
