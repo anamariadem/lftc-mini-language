@@ -20,14 +20,14 @@ class FirstFunction(private val grammar: Grammar) {
         /** Create */
         with(grammar.productions[key] ?: error("Key $key not found in productions!")) {
             forEach {
-                add(key, computeConcatenationOfOne(key, it))
+                add(key, computeConcatenationOfOne(it))
             }
         }
 
         return get(key)
     }
 
-    private fun computeConcatenationOfOne(key: String, tokenSequence: List<String>): HashSet<String> {
+    private fun computeConcatenationOfOne(tokenSequence: List<String>): HashSet<String> {
         if (tokenSequence.isEmpty())
             return hashSetOf()
 
@@ -40,7 +40,7 @@ class FirstFunction(private val grammar: Grammar) {
             return tokenValues
 
         tokenValues.remove(EPSILON)
-        return tokenValues.apply { addAll(computeConcatenationOfOne(firstToken, tokenSequence.drop(1))) }
+        return tokenValues.apply { addAll(computeConcatenationOfOne(tokenSequence.drop(1))) }
     }
 
     private fun add(key: String, tokens: HashSet<String>): HashSet<String> {
