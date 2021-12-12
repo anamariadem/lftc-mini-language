@@ -1,7 +1,9 @@
+import dto.Grammar
+
 fun main() {
     val grammar = Grammar()
 
-    grammar.readFromFile("assets/g3.txt")
+    grammar.readFromFile("assets/g4.txt")
 //    println(grammar)
 //
 //    grammar.validateStartingSymbol()
@@ -11,6 +13,7 @@ fun main() {
 //
 //    println(grammar.isContextFree())
     val parser = Parser(grammar)
-    println(parser.firstMap)
-    println(parser.followMap)
+    println(parser.first)
+    println(parser.follow)
+//    println(parser.followMap)
 }

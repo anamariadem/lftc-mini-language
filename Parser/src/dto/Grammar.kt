@@ -1,3 +1,8 @@
+package dto
+
+import once
+import readFileIndexed
+
 class Grammar {
     val terminals = arrayListOf<String>()
     val nonTerminals = arrayListOf<String>()

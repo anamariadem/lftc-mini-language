@@ -13,9 +13,4 @@ fun readFileIndexed(
 
 inline fun <T> Iterable<T>.once(predicate: (T) -> Boolean) = this.count(predicate) == 1
 
-inline fun <T> Iterable<T>.whileIndexed(predicate: (Int, T) -> Boolean) {
-    for ((index, item) in this.withIndex()) {
-        if (!predicate(index, item))
-            break
-    }
-}
+fun <T> List<T>.fromExcluding(element: T) = drop(indexOf(element) + 1)
