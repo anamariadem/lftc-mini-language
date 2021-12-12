@@ -32,9 +32,8 @@ class FirstFunction(private val grammar: Grammar) {
             return hashSetOf()
 
         val firstToken = tokenSequence.first()
-        if (tokenSequence.size < 2) {
-            return analyzeToken(key, firstToken)
-        }
+        if (tokenSequence.size < 2)
+            return getOrCreate(firstToken)
 
         val tokenValues = getOrCreate(firstToken)
         if (EPSILON !in tokenValues)
@@ -42,29 +41,6 @@ class FirstFunction(private val grammar: Grammar) {
 
         tokenValues.remove(EPSILON)
         return tokenValues.apply { addAll(computeConcatenationOfOne(firstToken, tokenSequence.drop(1))) }
-    }
-
-    private fun analyzeToken(key: String, token: String): HashSet<String> {
-        mapTerminalOrEpsilon(key, token)?.let {
-            return hashSetOf(it)
-        }
-
-        if (key == token)
-            return hashSetOf()
-
-        return getOrCreate(token)
-    }
-
-    private fun mapTerminalOrEpsilon(key: String, token: String) =
-        if (token == EPSILON || token in grammar.terminals)
-            add(key, token)
-        else
-            null
-
-    private fun add(key: String, token: String): String {
-        map[key]?.add(token)
-
-        return token
     }
 
     private fun add(key: String, tokens: HashSet<String>): HashSet<String> {
@@ -75,10 +51,10 @@ class FirstFunction(private val grammar: Grammar) {
 
     override fun toString() = map.toString()
 
-    operator fun get(key: String) = if (key in grammar.terminals)
+    operator fun get(key: String) = if (key == EPSILON || key in grammar.terminals)
         hashSetOf(key)
     else
-        map[key] ?: error("Key $key not present in non-terminals")
+        map[key]?.toHashSet() ?: error("Key $key not present in non-terminals")
 
     operator fun get(tokens: List<String>) = tokens.flatMap { get(it) }.toHashSet()
 }
