@@ -9,7 +9,7 @@ class Grammar {
     var startingSymbol = ""
         private set
     val productions = hashMapOf<String, ArrayList<List<String>>>()
-    val productionKeyOrder = arrayListOf<String>()
+    private val productionKeyOrder = arrayListOf<String>()
 
     fun readFromFile(fileName: String) = readFileIndexed(fileName) { index, line ->
         when (index) {
@@ -39,6 +39,18 @@ class Grammar {
     fun isContextFree() = productions.keys.all { key -> nonTerminals.once { it == key } }
 
     fun getProductionsInOrder() = productionKeyOrder.map { it to productions[it]!! }
+
+    fun getProduction(index: Int) = getProductionsInOrder()
+        .flatMap { (key, tokens) -> tokens.map { key to it } }
+        .let {
+            if (index in 1..it.size)
+                it[index - 1]
+            else
+                errorProductionByIndex(index)
+        }
+
+    private fun errorProductionByIndex(index: Int): Nothing =
+        error("Index $index not in range of productions (1..${productionKeyOrder.size})")
 
     private fun readProduction(line: String) {
         val (key, values) = line.split(" -> ")
