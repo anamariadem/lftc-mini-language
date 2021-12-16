@@ -21,7 +21,7 @@ class FollowFunction(private val grammar: Grammar, private val firstFunction: Fi
     private fun getOrCreate(key: String): HashSet<String> {
         get(key).let { it.isNotEmpty() && return it }
 
-        return add(key, analyzeToken(key))
+        return analyzeToken(key)
     }
 
     private fun analyzeTokenSequence(key: String, token: String, tokenSequence: List<String>): HashSet<String> {
@@ -42,14 +42,14 @@ class FollowFunction(private val grammar: Grammar, private val firstFunction: Fi
 
     private fun analyzeToken(token: String): HashSet<String> {
         val followTokens = if (token == grammar.startingSymbol)
-            hashSetOf(END_TERMINAL)
+            hashSetOf(add(token, END_TERMINAL))
         else
             hashSetOf()
 
         grammar.productions.flatMap { (key, values) -> values.map { key to it } }
             .filter { (key, sequence) -> key != token && token in sequence }
             .forEach { (key, sequence) ->
-                followTokens += analyzeTokenSequence(key, token, sequence)
+                followTokens += add(token, analyzeTokenSequence(key, token, sequence))
             }
 
         return followTokens
@@ -61,6 +61,12 @@ class FollowFunction(private val grammar: Grammar, private val firstFunction: Fi
         map[key]?.addAll(tokens)
 
         return tokens
+    }
+
+    private fun add(key: String, token: String): String {
+        map[key]?.add(token)
+
+        return token
     }
 
     override fun toString() = map.toString()

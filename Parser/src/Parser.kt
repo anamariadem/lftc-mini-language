@@ -9,8 +9,10 @@ class Parser(private val grammar: Grammar) {
     val follow = FollowFunction(grammar, first)
     val table = Table(grammar, first, follow)
 
-    fun evaluate(sequence: String): List<Int> {
-        val inputStack = ArrayDeque("$sequence $END_TERMINAL".split(" "))
+    fun evaluate(sequence: String) = evaluate(sequence.split(" "))
+
+    fun evaluate(sequence: List<String>): List<Int> {
+        val inputStack = ArrayDeque(sequence + arrayOf(END_TERMINAL))
         val workingStack = ArrayDeque(listOf(grammar.startingSymbol, END_TERMINAL))
         val outputStack = ArrayDeque<Int>()
 

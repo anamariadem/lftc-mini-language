@@ -46,7 +46,8 @@ class Table(
         val key = rowSymbol to columnSymbol
 
         if (key in data.keys)
-            error("($rowSymbol, $columnSymbol) already in table, grammar is not LL(1)!\nFailed to insert $value")
+            error("($rowSymbol, $columnSymbol) already in table with value ${data[key]}, grammar is not LL(1)!" +
+                    "\nFailed to insert $value")
 
         data[key] = value
     }
