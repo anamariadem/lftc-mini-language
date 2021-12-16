@@ -1,5 +1,6 @@
 package dto
 
+import EPSILON
 import once
 import readFileIndexed
 
@@ -28,7 +29,7 @@ class Grammar {
     fun validateProductions() = productions.forEach { (key, values) ->
         if (key !in nonTerminals)
             error("Invalid production '$key' not found in non-terminals list!")
-        values.flatten().firstOrNull { it !in terminals && it !in nonTerminals }?.let {
+        values.flatten().firstOrNull { it !in terminals && it !in nonTerminals && it != EPSILON }?.let {
             error("Invalid production '$it' not found in terminals or non-terminals list!")
         }
     }
