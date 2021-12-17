@@ -20,7 +20,7 @@ fun main() {
 //    println(parser.table)
 
     val pifSequence = parseProgramInternalForm()
-    println(pifSequence)
+//    println(pifSequence)
 //    val result = parser.evaluate("a a b")
     val result = parser.evaluate(pifSequence)
     Tree(grammar, result).print()

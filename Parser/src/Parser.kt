@@ -17,7 +17,7 @@ class Parser(private val grammar: Grammar) {
         val outputStack = ArrayDeque<Int>()
 
         while (inputStack.size > 0 || workingStack.size > 0) {
-//            logStack(inputStack, workingStack, outputStack)
+            logStack(inputStack, workingStack, outputStack)
 
             val inputStackFirst = inputStack.first()
             val workingStackFirst = workingStack.first()
@@ -68,7 +68,6 @@ class Parser(private val grammar: Grammar) {
         outputStack: ArrayDeque<Int>
     ) {
         val workingStackFirst = workingStack.first()
-        println(workingStackFirst)
         val (tokens, index) = table[workingStackFirst, inputStackFirst]
 
         workingStack.removeFirst()

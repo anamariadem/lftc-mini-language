@@ -18,8 +18,8 @@ arithmetic1 -> + arithmetic2 arithmetic1 | - arithmetic2 arithmetic1 | ε
 arithmetic2 -> multiply2 multiply1
 multiply1 -> * multiply2 multiply1 | / multiply2 multiply1 | ε
 multiply2 -> ( expression ) | id | const
-if_statement -> if condition then statement temp_if
-temp_if -> ε | else statement
-while_statement -> while ( condition ) execute statement
+if_statement -> if ( condition ) then { statement } temp_if
+temp_if -> ε | else { statement }
+while_statement -> while ( condition ) execute { statement }
 condition -> expression relational_operator expression
 relational_operator -> < | <= | == | != | >= | >
