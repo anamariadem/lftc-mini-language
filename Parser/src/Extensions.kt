@@ -1,4 +1,5 @@
 import java.io.File
+import java.io.FileWriter
 import java.util.*
 
 fun readFileIndexed(
@@ -15,8 +16,11 @@ inline fun <T> Iterable<T>.once(predicate: (T) -> Boolean) = this.count(predicat
 
 fun <T> List<T>.fromExcluding(element: T) = drop(indexOf(element) + 1)
 
-inline fun <T, R> Iterable<T>.flatMapNotNull(transform: (T) -> Iterable<R>?): List<R> {
-    val destination = arrayListOf<R>()
-    forEach { element -> transform(element)?.let { destination += it } }
-    return destination
+fun writeFile(
+    fileName: String,
+    operationBlock: (write: (String) -> Unit) -> Unit,
+) = with(FileWriter(fileName)) {
+    operationBlock(this::write)
+    flush()
+    close()
 }

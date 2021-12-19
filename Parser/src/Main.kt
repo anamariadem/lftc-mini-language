@@ -2,35 +2,50 @@ import dto.Grammar
 import dto.output.Tree
 
 fun main() {
+//    solveFirst()
+    solveSecond()
+}
+
+fun solveFirst() {
     val grammar = Grammar()
 
-    grammar.readFromFile("assets/g2.txt")
-//    println(grammar)
+    grammar.readFromFile("assets/input/g1.txt")
 
     grammar.validateStartingSymbol()
     grammar.validateProductions()
 
-//    println(grammar.getProductions("program"))
-//
-//    println(grammar.isContextFree())
+    val parser = Parser(grammar)
+    val sequence = parseSequence()
+    val evaluationResult = parser.evaluate(sequence)
+
+    Tree(grammar, evaluationResult).writeTo("assets/output/out1.txt")
+}
+
+fun solveSecond() {
+    val grammar = Grammar()
+
+    grammar.readFromFile("assets/input/g2.txt")
+
+    grammar.validateStartingSymbol()
+    grammar.validateProductions()
 
     val parser = Parser(grammar)
-//    println(parser.first)
-//    println(parser.follow)
-//    println(parser.table)
+    val sequence = parseProgramInternalForm()
+    val evaluationResult = parser.evaluate(sequence)
 
-    val pifSequence = parseProgramInternalForm()
-//    println(pifSequence)
-//    val result = parser.evaluate("a a b")
-    val result = parser.evaluate(pifSequence)
-    Tree(grammar, result).print()
-//    Tree(grammar, result).print()
+    Tree(grammar, evaluationResult).writeTo("assets/output/out2.txt")
 }
 
 fun parseProgramInternalForm() = arrayListOf<String>().apply {
-    readFileIndexed("assets/PIF.out") { _, line ->
+    readFileIndexed("assets/input/PIF.out") { _, line ->
         val endIndex = line.indexOf("', ")
 
         add(line.substring(2, endIndex))
+    }
+}
+
+fun parseSequence() = arrayListOf<String>().apply {
+    readFileIndexed("assets/input/seq.txt") { _, line ->
+        addAll(line.split(" "))
     }
 }

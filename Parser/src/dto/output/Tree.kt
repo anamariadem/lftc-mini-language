@@ -2,6 +2,7 @@ package dto.output
 
 import EPSILON
 import dto.Grammar
+import writeFile
 
 class Tree(private val grammar: Grammar, private val sequence: List<Int>) {
     lateinit var root: Node
@@ -14,6 +15,11 @@ class Tree(private val grammar: Grammar, private val sequence: List<Int>) {
     fun print() {
         depthIndex = 1
         breadthFirstSearch(root)
+    }
+
+    fun writeTo(filePath: String) = writeFile(filePath) {
+        depthIndex = 1
+        breadthFirstSearch(root, it)
     }
 
     private fun build() {
@@ -46,15 +52,18 @@ class Tree(private val grammar: Grammar, private val sequence: List<Int>) {
 
     private fun breadthFirstSearch(
         node: Node?,
+        fileWriter: ((String) -> Unit)? = null,
         fatherIndex: Int? = null,
-        siblingIndex: Int? = null
+        siblingIndex: Int? = null,
     ): List<Pair<Node?, Int>> {
         node ?: return listOf()
-        println("$depthIndex: ${node.value} $fatherIndex $siblingIndex")
+        val stringToPrint = "$depthIndex: ${node.value} $fatherIndex $siblingIndex"
+        println(stringToPrint)
+        fileWriter?.let { it("$stringToPrint\n") }
 
         val index = depthIndex++
 
-        val result = breadthFirstSearch(node.sibling, fatherIndex, index) +
+        val result = breadthFirstSearch(node.sibling, fileWriter, fatherIndex, index) +
                 listOf(node.child to index)
 
         siblingIndex?.let {
@@ -62,7 +71,7 @@ class Tree(private val grammar: Grammar, private val sequence: List<Int>) {
         }
 
         result.forEach { (childNode, nodeIndex) ->
-            breadthFirstSearch(childNode, nodeIndex)
+            breadthFirstSearch(childNode, fileWriter, nodeIndex)
         }
 
         return emptyList()
