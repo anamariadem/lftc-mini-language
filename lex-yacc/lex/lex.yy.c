@@ -529,8 +529,42 @@ char *yytext;
 #include <stdio.h>
 #include <string.h>
 int lines = 0;
-#line 532 "lex.yy.c"
-#line 533 "lex.yy.c"
+
+struct PifElement {
+    char key[100];
+    int position;
+} element;
+
+char symbolTable[100][100];
+int sizeSt = 0;
+int sizePif = 0;
+struct PifElement pif[100] ;
+
+void addToPifKey(char* text) {
+    strcpy(element.key, text);
+    element.position = -1;
+    pif[sizePif++] = element;
+}
+
+int addToSt(char* text) {
+    for (int i = 0; i < sizeSt; ++i) {
+        if (strcmp(symbolTable[i], text) == 0) {
+            return i;
+        }
+    }
+    strcpy(symbolTable[sizeSt], text);
+    return sizeSt++;
+}
+
+void addToPifNotKey(char* text) {
+    strcpy(element.key, text);
+    element.position = addToSt(text);
+    pif[sizePif++] = element;
+}
+
+
+#line 566 "lex.yy.c"
+#line 567 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -747,10 +781,10 @@ YY_DECL
 		}
 
 	{
-#line 17 "specif.lxi"
+#line 51 "specif.lxi"
 
 
-#line 753 "lex.yy.c"
+#line 787 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -809,201 +843,201 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 19 "specif.lxi"
-{printf("Reserved word: %s\n", yytext);}
+#line 53 "specif.lxi"
+{printf("Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 20 "specif.lxi"
-{printf("Reserved word: %s\n", yytext);}
+#line 54 "specif.lxi"
+{printf("Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 21 "specif.lxi"
-{printf("Reserved word: %s\n", yytext);}
+#line 55 "specif.lxi"
+{printf("Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 22 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext);}
+#line 56 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 23 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext);}
+#line 57 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 24 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext);}
+#line 58 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext);} addToPifKey(yytext);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 25 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext);}
+#line 59 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext);}
+#line 60 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 27 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext);}
+#line 61 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext); }
+#line 62 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext); }
+#line 63 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 30 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext); }
+#line 64 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext); }
+#line 65 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 32 "specif.lxi"
-{printf( "Reserved word: %s\n", yytext); }
+#line 66 "specif.lxi"
+{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 34 "specif.lxi"
-{printf( "Identifier: %s\n", yytext); }
+#line 68 "specif.lxi"
+{printf( "Identifier: %s\n", yytext); addToPifNotKey(yytext);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 36 "specif.lxi"
-{printf( "Constant: %s\n", yytext ); }
+#line 70 "specif.lxi"
+{printf( "Constant: %s\n", yytext ); addToPifNotKey(yytext);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 38 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 72 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 39 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 73 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 40 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 74 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 41 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 75 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 42 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 76 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 77 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 78 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "specif.lxi"
-{printf( "Separator: %s\n", yytext ); }
+#line 79 "specif.lxi"
+{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 46 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 80 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 47 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 81 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 48 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 82 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 49 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 83 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 50 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 84 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 51 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 85 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 52 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 86 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 53 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 87 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 54 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 88 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 55 "specif.lxi"
-{printf( "Operator: %s\n", yytext ); }
+#line 89 "specif.lxi"
+{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 56 "specif.lxi"
+#line 90 "specif.lxi"
 {printf( "Separator: %s\n", yytext ); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 59 "specif.lxi"
+#line 93 "specif.lxi"
 {}
 	YY_BREAK
 case 37:
 /* rule 37 can match eol */
 YY_RULE_SETUP
-#line 60 "specif.lxi"
+#line 94 "specif.lxi"
 {lines++;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 62 "specif.lxi"
+#line 96 "specif.lxi"
 printf("Error on line %d\n", lines + 1);
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 63 "specif.lxi"
+#line 97 "specif.lxi"
 ECHO;
 	YY_BREAK
-#line 1006 "lex.yy.c"
+#line 1040 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2008,5 +2042,29 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 63 "specif.lxi"
+#line 97 "specif.lxi"
 
+
+void printSt() {
+    printf("Symbol table: \n");
+    for (int i = 0; i < sizeSt; ++i) {
+        printf("\t%s at position %d\n", symbolTable[i], i);
+    }
+    printf("\n");
+}
+
+void printPif() {
+    printf("Program Internal Form: \n");
+    for (int i = sizePif - 1; i >= 0; --i) {
+        printf("\tElement %s at position %d in Symbol Table\n", pif[i].key, pif[i].position);
+    }
+    printf("\n");
+}
+
+int main(int argc, char** argv) {
+    yyin = stdin;
+    yylex();
+    printf("\nParsed %d lines\n\n", lines);
+    printPif();
+    printSt();
+}

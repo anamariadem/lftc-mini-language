@@ -2,6 +2,40 @@
 #include <stdio.h>
 #include <string.h>
 int lines = 0;
+
+struct PifElement {
+    char key[100];
+    int position;
+} element;
+
+char symbolTable[100][100];
+int sizeSt = 0;
+int sizePif = 0;
+struct PifElement pif[100] ;
+
+void addToPifKey(char* text) {
+    strcpy(element.key, text);
+    element.position = -1;
+    pif[sizePif++] = element;
+}
+
+int addToSt(char* text) {
+    for (int i = 0; i < sizeSt; ++i) {
+        if (strcmp(symbolTable[i], text) == 0) {
+            return i;
+        }
+    }
+    strcpy(symbolTable[sizeSt], text);
+    return sizeSt++;
+}
+
+void addToPifNotKey(char* text) {
+    strcpy(element.key, text);
+    element.position = addToSt(text);
+    pif[sizePif++] = element;
+}
+
+
 %}
 
 %option noyywrap
@@ -16,43 +50,43 @@ id		[a-zA-Z][a-zA-Z0-9]*
 
 %%
 
-"start" {printf("Reserved word: %s\n", yytext);}
-"finish" {printf("Reserved word: %s\n", yytext);}
-"def" {printf("Reserved word: %s\n", yytext);}
-"else"	{printf( "Reserved word: %s\n", yytext);}
-"execute"	{printf( "Reserved word: %s\n", yytext);}
-"while"	{printf( "Reserved word: %s\n", yytext);}
-"if"	{printf( "Reserved word: %s\n", yytext);}
-"then"	{printf( "Reserved word: %s\n", yytext);}
-"int"	{printf( "Reserved word: %s\n", yytext);}
-"char" {printf( "Reserved word: %s\n", yytext); }
-"read"	{printf( "Reserved word: %s\n", yytext); }
-"log"	{printf( "Reserved word: %s\n", yytext); }
-"string"	{printf( "Reserved word: %s\n", yytext); }
-"exit"	{printf( "Reserved word: %s\n", yytext); }
+"start" {printf("Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"finish" {printf("Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"def" {printf("Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"else"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"execute"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"while"	{printf( "Reserved word: %s\n", yytext);} addToPifKey(yytext);
+"if"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"then"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"int"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"char" {printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"read"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"log"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"string"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
+"exit"	{printf( "Reserved word: %s\n", yytext); addToPifKey(yytext);}
 
-{id}	{printf( "Identifier: %s\n", yytext); }
+{id}	{printf( "Identifier: %s\n", yytext); addToPifNotKey(yytext);}
 
-{const}	{printf( "Constant: %s\n", yytext ); }
+{const}	{printf( "Constant: %s\n", yytext ); addToPifNotKey(yytext);}
 
-":"	{printf( "Separator: %s\n", yytext ); }
-";"	{printf( "Separator: %s\n", yytext ); }
-"{"	{printf( "Separator: %s\n", yytext ); }
-"}"	{printf( "Separator: %s\n", yytext ); }
-"("	{printf( "Separator: %s\n", yytext ); }
-")"	{printf( "Separator: %s\n", yytext ); }
-"["	{printf( "Separator: %s\n", yytext ); }
-"]"	{printf( "Separator: %s\n", yytext ); }
-"+"	{printf( "Operator: %s\n", yytext ); }
-"-"	{printf( "Operator: %s\n", yytext ); }
-"*"	{printf( "Operator: %s\n", yytext ); }
-"/"	{printf( "Operator: %s\n", yytext ); }
-"<"	{printf( "Operator: %s\n", yytext ); }
-">"	{printf( "Operator: %s\n", yytext ); }
-"<="	{printf( "Operator: %s\n", yytext ); }
-">="	{printf( "Operator: %s\n", yytext ); }
-"!="	{printf( "Operator: %s\n", yytext ); }
-"=="	{printf( "Operator: %s\n", yytext ); }
+":"	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+";"	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+"{"	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+"}"	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+"("	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+")"	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+"["	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+"]"	{printf( "Separator: %s\n", yytext ); addToPifKey(yytext);}
+"+"	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"-"	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"*"	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"/"	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"<"	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+">"	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"<="	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+">="	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"!="	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
+"=="	{printf( "Operator: %s\n", yytext ); addToPifKey(yytext);}
 "="	{printf( "Separator: %s\n", yytext ); }
 
 
@@ -61,3 +95,27 @@ id		[a-zA-Z][a-zA-Z0-9]*
 
 . printf("Error on line %d\n", lines + 1);
 %%
+
+void printSt() {
+    printf("Symbol table: \n");
+    for (int i = 0; i < sizeSt; ++i) {
+        printf("\t%s at position %d\n", symbolTable[i], i);
+    }
+    printf("\n");
+}
+
+void printPif() {
+    printf("Program Internal Form: \n");
+    for (int i = sizePif - 1; i >= 0; --i) {
+        printf("\tElement %s at position %d in Symbol Table\n", pif[i].key, pif[i].position);
+    }
+    printf("\n");
+}
+
+int main(int argc, char** argv) {
+    yyin = stdin;
+    yylex();
+    printf("\nParsed %d lines\n\n", lines);
+    printPif();
+    printSt();
+}
