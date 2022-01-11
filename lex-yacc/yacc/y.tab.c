@@ -160,6 +160,14 @@
 
 #define YYDEBUG 1
 
+int workingStack[100];
+int currentIndex = 0;
+
+void push(int value) {
+    workingStack[currentIndex++] = value;
+}
+
+
 int yylex();
 yyerror(char *s);
 
@@ -196,7 +204,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 200 "y.tab.c"
+#line 208 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -498,11 +506,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    64,    64,    66,    68,    68,    70,    70,    72,    72,
-      72,    74,    76,    76,    76,    76,    76,    76,    78,    78,
-      80,    82,    84,    86,    86,    86,    88,    88,    88,    90,
-      90,    90,    92,    94,    96,    98,    98,    98,    98,    98,
-      98
+       0,    72,    72,    74,    76,    76,    78,    78,    80,    80,
+      80,    82,    84,    84,    84,    84,    84,    84,    86,    86,
+      88,    90,    92,    94,    94,    94,    96,    96,    96,    98,
+      98,    98,   100,   102,   104,   106,   106,   106,   106,   106,
+     106
 };
 #endif
 
@@ -1458,9 +1466,99 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
+        case 2:
+#line 72 "language.y"
+    {push(1);}
+    break;
+
+  case 3:
+#line 74 "language.y"
+    {push(2);}
+    break;
+
+  case 5:
+#line 76 "language.y"
+    {push(3);}
+    break;
+
+  case 7:
+#line 78 "language.y"
+    {push(4);}
+    break;
+
+  case 10:
+#line 80 "language.y"
+    {push(5);}
+    break;
+
+  case 11:
+#line 82 "language.y"
+    {push(6);}
+    break;
+
+  case 17:
+#line 84 "language.y"
+    {push(7);}
+    break;
+
+  case 19:
+#line 86 "language.y"
+    {push(8);}
+    break;
+
+  case 20:
+#line 88 "language.y"
+    {push(9);}
+    break;
+
+  case 21:
+#line 90 "language.y"
+    {push(10);}
+    break;
+
+  case 22:
+#line 92 "language.y"
+    {push(11);}
+    break;
+
+  case 25:
+#line 94 "language.y"
+    {push(12);}
+    break;
+
+  case 28:
+#line 96 "language.y"
+    {push(13);}
+    break;
+
+  case 31:
+#line 98 "language.y"
+    {push(14);}
+    break;
+
+  case 32:
+#line 100 "language.y"
+    {push(15);}
+    break;
+
+  case 33:
+#line 102 "language.y"
+    {push(16);}
+    break;
+
+  case 34:
+#line 104 "language.y"
+    {push(17);}
+    break;
+
+  case 40:
+#line 106 "language.y"
+    {push(18);}
+    break;
+
+
 /* Line 1267 of yacc.c.  */
-#line 1464 "y.tab.c"
+#line 1562 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1674,8 +1772,16 @@ yyreturn:
 }
 
 
-#line 101 "language.y"
+#line 109 "language.y"
 
+
+void printStack() {
+    printf("Stack: \n");
+    for (int i = 0; i < currentIndex; ++i) {
+        printf("%d ", workingStack[i]);
+    }
+    printf("\n");
+}
 
 yyerror(char *s)
 {
@@ -1689,4 +1795,6 @@ int main(int argc, char **argv)
 	if(argc>1) yyin = fopen(argv[1],"r");
     //yydebug = 1;
 	if(!yyparse()) fprintf(stderr, "\tO.K.\n");
+
+	printStack();
 }

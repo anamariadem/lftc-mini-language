@@ -5,6 +5,13 @@
 
 #define YYDEBUG 1
 
+int workingStack[100];
+int currentIndex = 0;
+
+void push(int value) {
+    workingStack[currentIndex++] = value;
+}
+
 int yylex();
 yyerror(char *s);
 
@@ -107,6 +114,14 @@ relational_operator : LT | GT | EQ | NE | GTE | LTE
     ;
 %%
 
+void printStack() {
+    printf("Stack: \n");
+    for (int i = 0; i < currentIndex; ++i) {
+        printf("\t%s\t", workingStack[i]);
+    }
+    printf("\n");
+}
+
 yyerror(char *s)
 {
 	printf("%s\n",s);
@@ -119,4 +134,6 @@ int main(int argc, char **argv)
 	if(argc>1) yyin :  fopen(argv[1],"r");
 	yydebug = 1;
 	if(!yyparse()) fprintf(stderr, "\tO.K.\n");
+
+	printStack();
 }
